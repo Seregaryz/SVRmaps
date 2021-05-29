@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="divider_size">1dp</dimen>
+    <dimen name="toolbar_elevation">8dp</dimen>
+    <dimen name="bottom_bar_notification_left_margin">12dp</dimen>
+    <dimen name="corner_radius">12dp</dimen>
+    <dimen name="elevation">40dp</dimen>
+
+    <dimen name="screen_horizontal_margin">16dp</dimen>
+</resources>

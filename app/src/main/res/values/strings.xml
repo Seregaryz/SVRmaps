@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">SVRmaps</string>
+    <string name="tv_search">Search</string>
+    <string name="tv_maps_title">SVRmaps</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="tv_sign_up">Регистрация</string>
+    <string name="tv_sign_up_description">Зарегистрируйся в приложении. Желающих обмениваться предметами гораздо больше, чем тебе кажется!</string>
+    <string name="tv_email">Email</string>
+    <string name="tv_name">Имя</string>
+    <string name="tv_nickname">Никнейм</string>
+    <string name="tv_password">Пароль</string>
+    <string name="tv_repeat_password">Повторите пароль</string>
+    <string name="btn_sign_up">Зарегистрироваться</string>
+    <string name="tv_have_account_sign_in">Есть аккаунт? Войти</string>
+    <string name="tv_sign_in">Авторизация</string>
+    <string name="tv_sign_in_description">Войди в приложение и получи доступ к карте обменов предметами!</string>
+    <string name="btn_sign_in">Войти</string>
+    <string name="btn_no_account_sign_up">Нет аккаунта? Зарегистрироваться</string>
+</resources>

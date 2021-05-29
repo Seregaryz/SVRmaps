@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <attr name="fontRegular" format="reference" />
+    <attr name="fontMedium" format="reference" />
+    <attr name="fontBold" format="reference" />
+    <attr name="fontLight" format="reference" />
+
+    <attr name="colorTextPrimary" format="reference" />
+    <attr name="colorTextPrimaryReverse" format="reference" />
+    <attr name="colorTextSecondary" format="reference" />
+    <attr name="colorTextSecondaryAlpha75" format="reference" />
+    <attr name="colorTextAccent" format="reference" />
+    <attr name="colorTextAccent2" format="reference" />
+
+    <!--    new colors-->
+    <attr name="colorBackgroundPrimary" format="color" />
+    <attr name="colorBackgroundSecondary" format="color" />
+    <attr name="colorBackgroundTertiary" format="color" />
+    <attr name="colorPrimaryApp" format="color" />
+    <attr name="colorSecondary" format="color" />
+    <attr name="colorSenary" format="color" />
+    <attr name="colorQuaternary" format="color" />
+    <attr name="colorQuinary" format="color" />
+    <attr name="colorSeparator" format="color" />
+    <attr name="colorSeptenary" format="color" />
+
+</resources>
