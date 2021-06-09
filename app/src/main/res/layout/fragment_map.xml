@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".fragment.map.MapFragment">
+    tools:context=".ui.map.MapFragment">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"

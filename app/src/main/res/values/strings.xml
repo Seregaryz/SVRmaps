@@ -17,4 +17,7 @@
     <string name="tv_sign_in_description">Войди в приложение и получи доступ к карте обменов предметами!</string>
     <string name="btn_sign_in">Войти</string>
     <string name="btn_no_account_sign_up">Нет аккаунта? Зарегистрироваться</string>
+    <string name="exchange">Карта обменов</string>
+    <string name="add_new_subject">Предложить обмен</string>
+    <string name="profile">Мой профиль</string>
 </resources>

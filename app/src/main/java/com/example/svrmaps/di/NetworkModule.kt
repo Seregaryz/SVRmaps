@@ -3,25 +3,21 @@ package com.example.svrmaps.di
 import android.content.Context
 import android.os.Build
 import com.example.svrmaps.BuildConfig
+import com.example.svrmaps.R
 import com.example.svrmaps.network.api.Api
-import com.example.svrmaps.utils.Tls12SocketFactory.Companion.enableTls12
+import com.example.svrmaps.system.Tls12SocketFactory.Companion.enableTls12
+import com.example.svrmaps.utils.setSslContext
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
 import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ApplicationComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
-import lc.deck.rudn.BuildConfig
-import lc.deck.rudn.data.cache.EventCalendarCache
-import lc.deck.rudn.data.server.Api
-import lc.deck.rudn.data.server.ApiWithEventCalendarCache
-import lc.deck.rudn.data.server.interceptor.AuthHeaderInterceptor
-import lc.deck.rudn.data.server.interceptor.ErrorResponseInterceptor
-import lc.deck.rudn.system.LanguageManager
-import lc.deck.rudn.system.LocaleHolder
-import lc.deck.rudn.system.SessionKeeper
-import lc.deck.rudn.utils.Tls12SocketFactory.Companion.enableTls12
-import lc.deck.rudn.utils.setSslContext
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -81,4 +77,25 @@ class NetworkModule {
             build()
         }.create(Api::class.java)
     }
+
+    @Provides
+    @Singleton
+    fun provideFirebaseAuth(): FirebaseAuth = FirebaseAuth.getInstance()
+
+    @Provides
+    @Singleton
+    fun provideGoogleSignInOptions(): GoogleSignInOptions =
+        GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(R.string.default_web_client_id.toString())
+            .requestEmail()
+            .build()
+
+    @Provides
+    @Singleton
+    fun provideGoogleSignInClient(@ApplicationContext context: Context, gso: GoogleSignInOptions): GoogleSignInClient =
+        GoogleSignIn.getClient(context, gso)
+
+    @Provides
+    @Singleton
+    fun provideFirebaseDatabase(): FirebaseDatabase = FirebaseDatabase.getInstance()
 }

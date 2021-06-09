@@ -16,11 +16,16 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <style name="ProgressDialogTheme" parent="ThemeOverlay.AppCompat.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="colorAccent">@color/backgroundPrimary</item>
+    </style>
+
     <style name="Button.Primary" parent="@style/Widget.AppCompat.Button">
         <item name="backgroundTint">@color/color_states_buttons</item>
         <item name="android:textColor">@color/white</item>
-        <item name="android:textAllCaps">false</item>
-        <item name="android:textAppearance">@style/Body4</item>
+        <item name="android:fontFamily">?attr/fontMedium</item>
+        <item name="android:textAllCaps">true</item>
     </style>
 
     <style name="Button.OutlinedPrimary" parent="@style/Widget.MaterialComponents.Button">
