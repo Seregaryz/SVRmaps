@@ -1,8 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
-apply plugin: 'kotlin-kapt'
 apply plugin: 'dagger.hilt.android.plugin'
+apply plugin: 'kotlin-kapt'
 apply plugin: 'com.google.gms.google-services'
 
 android {
@@ -38,16 +37,7 @@ android {
     }
 
     flavorDimensions 'environment'
-    productFlavors {
-        prod {
-            dimension = 'environment'
-            buildConfigField(
-                    "String",
-                    "BASE_URL",
-                    "\"https://mobapp-api.rudn.ru/\""
-            )
-        }
-    }
+
     allprojects {
         repositories {
             jcenter()
@@ -70,11 +60,6 @@ android {
         }
     }
 }
-
-androidExtensions {
-    experimental = true
-}
-
 
 repositories {
     maven {
@@ -129,10 +114,10 @@ dependencies {
     implementation "com.mapbox.search:mapbox-search-android-ui:1.0.0-beta.12"
 
     //    di
-    implementation "com.google.dagger:hilt-android:2.28-alpha"
-    kapt "com.google.dagger:hilt-android-compiler:2.28-alpha"
-    implementation 'androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha02'
-    kapt 'androidx.hilt:hilt-compiler:1.0.0-alpha02'
+    implementation "com.google.dagger:hilt-android:2.31-alpha"
+    kapt "com.google.dagger:hilt-android-compiler:2.31-alpha"
+    implementation 'androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha03'
+    kapt 'androidx.hilt:hilt-compiler:1.0.0'
 
     //    rx
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'

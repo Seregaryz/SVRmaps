@@ -5,7 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.svrmaps.databinding.LayoutContainerBinding
+import com.example.svrmaps.ui.add_subject.AddSubjectFragment
 import com.example.svrmaps.ui.base.BaseFragment
+import com.example.svrmaps.utils.newRootScreen
 
 class AddSubjectFlowFragment : BaseFragment() {
 
@@ -18,6 +20,15 @@ class AddSubjectFlowFragment : BaseFragment() {
     ): View {
         _binding = LayoutContainerBinding.inflate(layoutInflater)
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        if (childFragmentManager.fragments.isEmpty()) {
+            childFragmentManager.newRootScreen(
+                AddSubjectFragment::class.java
+            )
+        }
     }
 
 }

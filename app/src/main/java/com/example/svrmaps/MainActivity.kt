@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.svrmaps.databinding.ActivityMainBinding
+import com.example.svrmaps.ui.main.MainFragment
 import com.example.svrmaps.ui.sign_up.SignUpFragment
 import com.example.svrmaps.utils.newRootScreen
 import com.google.firebase.FirebaseApp
@@ -21,6 +22,6 @@ class MainActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
         FirebaseApp.initializeApp(this.applicationContext)
-        supportFragmentManager.newRootScreen(SignUpFragment::class.java)
+        supportFragmentManager.newRootScreen(MainFragment::class.java)
     }
 }

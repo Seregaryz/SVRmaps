@@ -1,9 +1,7 @@
 package com.example.svrmaps.di
 
-import android.content.Context
 import com.example.predicate.model.schedulers.AppSchedulers
 import com.example.predicate.model.schedulers.SchedulersProvider
-import com.example.svrmaps.App
 import com.example.svrmaps.interactor.UserInteractor
 import com.example.svrmaps.system.ErrorHandler
 import com.example.svrmaps.system.ResourceManager
@@ -13,11 +11,11 @@ import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ApplicationComponent
+import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
 @Module
-@InstallIn(ApplicationComponent::class)
+@InstallIn(SingletonComponent::class)
 abstract class AppModule {
 
     companion object {

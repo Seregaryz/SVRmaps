@@ -20,4 +20,9 @@
     <string name="exchange">Карта обменов</string>
     <string name="add_new_subject">Предложить обмен</string>
     <string name="profile">Мой профиль</string>
+    <string name="tv_add_subject_title">Предложить обмен</string>
+    <string name="tv_add_subject_desc">Есть ненужный предмет? Предложи окружающим обменять его, наверняка у них есть то, что предложить взамен</string>
+    <string name="tv_subject_name">Название предмета</string>
+    <string name="tv_subject_description">Описание предмета</string>
+    <string name="btn_add_subject">Создать</string>
 </resources>
