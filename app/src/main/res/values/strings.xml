@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">SVRmaps</string>
+    <string name="mapbox_access_token">pk.eyJ1IjoiZXBpY3VzIiwiYSI6ImNrbzRubnJ1YjFremsycXBnczk0ZnV0NWYifQ.kR8J7q7vH7sqI9U5vdF-rA</string>
+
     <string name="tv_search">Search</string>
     <string name="tv_maps_title">SVRmaps</string>
     <!-- TODO: Remove or change this placeholder text -->
@@ -25,4 +27,10 @@
     <string name="tv_subject_name">Название предмета</string>
     <string name="tv_subject_description">Описание предмета</string>
     <string name="btn_add_subject">Создать</string>
+    <string name="tv_current_account_title">Текущий аккаунт</string>
+    <string name="btn_sign_out">Выйти из аккаунта</string>
+    <string name="tv_active_subjects">Ваши объявления:</string>
+    <string name="tv_exchange_suggestions">Предложения обмена:</string>
+    <string name="tv_exhange_offer">Предложение обмена</string>
+    <string name="tv_make_exchange">Совершить обмен</string>
 </resources>

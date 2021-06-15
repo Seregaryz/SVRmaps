@@ -8,6 +8,9 @@ import android.view.ViewGroup
 import com.example.svrmaps.databinding.FrProfileFlowBinding
 import com.example.svrmaps.databinding.LayoutContainerBinding
 import com.example.svrmaps.ui.base.BaseFragment
+import com.example.svrmaps.ui.exchange.ExchangeMapFragment
+import com.example.svrmaps.ui.profile.ProfileFragment
+import com.example.svrmaps.utils.newRootScreen
 
 class ProfileFlowFragment : BaseFragment() {
 
@@ -20,6 +23,15 @@ class ProfileFlowFragment : BaseFragment() {
     ): View {
         _binding = LayoutContainerBinding.inflate(layoutInflater)
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        if (childFragmentManager.fragments.isEmpty()) {
+            childFragmentManager.newRootScreen(
+                ProfileFragment::class.java
+            )
+        }
     }
 
 }

@@ -79,6 +79,7 @@ class SignUpFragment : BaseFragment() {
                 Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
             }
             successSignUp.subscribe {
+                viewModel.signOutWhenSuccess()
                 parentFragmentManager.navigateTo(
                     SignInFragment::class.java,
                     setupFragmentTransaction = { it.setSlideAnimation() }

@@ -1,7 +1,12 @@
 package com.example.svrmaps.model.subject
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
+@Parcelize
 data class Subject(
-    val id: Int,
     val name: String,
-    val description: String
-)
+    val description: String,
+    val latitude: Double?,
+    val longitude: Double?
+) : Parcelable

@@ -10,10 +10,11 @@ class UserInteractor @Inject constructor(
     private val userRepository: UserRepository
 ){
 
-    fun signIn(email: String, password: String): String {
-        return userRepository.signIn(email, password)
-    }
+    fun signIn(email: String, password: String): Single<UserAccount> =
+        Single.just(UserAccount(email, userRepository.signIn(email, password)))
 
     fun createAccount(email: String, password: String): Single<UserAccount> =
-        Single.just(UserAccount(0, email, userRepository.createAccount(email, password)))
+        Single.just(UserAccount(email, userRepository.createAccount(email, password)))
+
+    fun signOut() = userRepository.signOut()
 }

@@ -15,6 +15,7 @@ import com.yandex.mapkit.map.CameraPosition
 import com.yandex.mapkit.map.MapObjectCollection
 import com.yandex.mapkit.search.Response
 import com.yandex.runtime.image.ImageProvider
+import timber.log.Timber
 
 
 class MapFragment : Fragment() {

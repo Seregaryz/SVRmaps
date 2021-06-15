@@ -1,10 +1,8 @@
 package com.example.svrmaps.ui.sign_in
 
-import androidx.hilt.lifecycle.ViewModelInject
 import com.example.predicate.model.schedulers.SchedulersProvider
 import com.example.svrmaps.interactor.UserInteractor
 import com.example.svrmaps.model.user.UserAccount
-import com.example.svrmaps.model.user.UserSignUpItem
 import com.example.svrmaps.system.ErrorHandler
 import com.example.svrmaps.system.SingleEvent
 import com.example.svrmaps.system.acceptSingleEvent
@@ -24,17 +22,37 @@ class SignInViewModel @Inject constructor(
     private val userInteractor: UserInteractor
 ) : BaseViewModel() {
 
+    var currentEmail = ""
+    var currentPassword = ""
 
     private var disposable: Disposable? = null
 
     private val errorMessageRelay = BehaviorRelay.create<SingleEvent<String>>()
     private val loadingRelay = BehaviorRelay.create<Boolean>()
-    private val successSignUpRelay = BehaviorRelay.create<UserAccount>()
+    private val successSignInRelay = BehaviorRelay.create<UserAccount>()
 
     val errorMessage: Observable<SingleEvent<String>> = errorMessageRelay.hide()
     val loading: Observable<Boolean> = loadingRelay.hide()
-    val successSignUp: Observable<UserAccount> = successSignUpRelay.hide()
+    val successSignIn: Observable<UserAccount> = successSignInRelay.hide()
 
+    fun signIn() {
+        disposable = userInteractor.signIn(currentEmail, currentPassword)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnSubscribe { loadingRelay.accept(true) }
+            .doFinally { loadingRelay.accept(false) }
+            .subscribe (
+                {
+                    successSignInRelay.accept(it)
+                }, { e ->
+                    errorHandler.proceed(e) {
+                        errorMessageRelay.acceptSingleEvent(it)
+                    }
+                }
+            )
+    }
 
+    fun validateData(): Boolean =
+        currentEmail != "" && currentPassword != ""
 
 }

@@ -35,8 +35,8 @@ class AddSubjectViewModel @Inject constructor(
     val loading: Observable<Boolean> = loadingRelay.hide()
     val successSignUp: Observable<String> = successSignUpRelay.hide()
 
-    fun createSubject() {
-        disposable = interactor.createSubject(currentName, currentDescription)
+    fun createSubject(latitude: Double?, longitude: Double?) {
+        disposable = interactor.createSubject(currentName, currentDescription, latitude, longitude)
             .subscribeOn(schedulers.io())
             .observeOn(schedulers.ui())
             .doOnSubscribe { loadingRelay.accept(true) }

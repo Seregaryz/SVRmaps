@@ -10,12 +10,15 @@ import com.example.svrmaps.system.SingleEvent
 import com.example.svrmaps.system.acceptSingleEvent
 import com.example.svrmaps.ui.base.BaseViewModel
 import com.jakewharton.rxrelay2.BehaviorRelay
+import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
+import javax.inject.Inject
 
-class SignUpViewModel @ViewModelInject constructor(
+@HiltViewModel
+class SignUpViewModel @Inject constructor(
     private val errorHandler: ErrorHandler,
     private val schedulers: SchedulersProvider,
     private val userInteractor: UserInteractor
@@ -48,6 +51,10 @@ class SignUpViewModel @ViewModelInject constructor(
                     }
                 }
             )
+    }
+
+    fun signOutWhenSuccess() {
+        userInteractor.signOut()
     }
 
     fun validateData(): Boolean =

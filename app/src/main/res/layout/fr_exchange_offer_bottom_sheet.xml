@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingHorizontal="@dimen/screen_horizontal_margin"
+    android:paddingVertical="24dp"
+    tools:context=".ui.exchange.exchange_offer.ExchangeOfferBottomSheetFragment"
+    android:orientation="vertical">
+
+    <TextView
+        style="@style/H1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/tv_exhange_offer"
+        android:textColor="@color/primary_text" />
+
+    <TextView
+        style="@style/Caption2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="@string/tv_subject_name"
+        android:textColor="@color/secondary_text" />
+
+    <TextView
+        android:id="@+id/subjectName"
+        style="@style/Subtitle3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:text="Билет в кино"
+        android:textColor="@color/primary_text"/>
+
+    <TextView
+        style="@style/Caption2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/tv_subject_description"
+        android:textColor="@color/secondary_text" />
+
+    <TextView
+        android:id="@+id/subjectDescription"
+        style="@style/Subtitle3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:text="Билет в кино"
+        android:textColor="@color/primary_text"/>
+
+    <Button
+        android:id="@+id/btnMakeExchange"
+        style="@style/Button.Primary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/bg_button_corners_12dp"
+        android:text="@string/tv_make_exchange"
+        android:textSize="15sp"/>
+
+</LinearLayout>

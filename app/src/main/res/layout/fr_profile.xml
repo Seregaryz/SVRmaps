@@ -3,8 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    tools:context=".ui.add_subject.AddSubjectFragment">
+    tools:context=".ui.profile.ProfileFragment">
 
     <ScrollView
         android:id="@+id/container"
@@ -27,19 +28,31 @@
                 android:paddingVertical="20dp">
 
                 <TextView
-                    style="@style/H1"
+                    style="@style/Subtitle1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/tv_add_subject_title"
+                    android:text="@string/tv_current_account_title"
                     android:textColor="@color/white" />
 
                 <TextView
-                    style="@style/Subtitle3"
+                    android:id="@+id/tvEmail"
+                    style="@style/H2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="@string/tv_add_subject_desc"
+                    tools:text="ivanov@gmail.com"
                     android:textColor="@color/white" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnSignUp"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:text="@string/btn_sign_out"
+                    android:textSize="14sp"
+                    android:layout_marginTop="16dp"
+                    app:cornerRadius="12dp"
+                    app:strokeColor="@color/primaryColor"
+                    app:strokeWidth="1dp" />
 
             </LinearLayout>
 
@@ -56,42 +69,20 @@
                     android:orientation="vertical">
 
                     <TextView
-                        style="@style/Caption2"
+                        style="@style/Body2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="24dp"
-                        android:text="@string/tv_subject_name"
+                        android:text="@string/tv_active_subjects"
                         android:textColor="@color/secondary_text" />
-
-                    <EditText
-                        android:id="@+id/etSubjectName"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="2dp"
-                        android:background="@drawable/bg_sign_up_edit_text"
-                        android:paddingVertical="10dp"
-                        android:paddingHorizontal="10dp"
-                        android:inputType="text"/>
 
                     <TextView
-                        style="@style/Caption2"
+                        style="@style/Body2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        android:text="@string/tv_subject_description"
+                        android:layout_marginTop="32dp"
+                        android:text="@string/tv_exchange_suggestions"
                         android:textColor="@color/secondary_text" />
-
-                    <EditText
-                        android:id="@+id/etSubjectDescription"
-                        android:layout_width="match_parent"
-                        android:layout_height="128dp"
-                        android:layout_marginTop="2dp"
-                        android:background="@drawable/bg_sign_up_edit_text"
-                        android:paddingVertical="10dp"
-                        android:paddingHorizontal="10dp"
-                        android:gravity="top"
-                        android:inputType="textMultiLine"
-                        android:padding="12dp"/>
 
                 </LinearLayout>
 
@@ -106,10 +97,10 @@
         style="@style/Button.Primary"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
         android:layout_marginHorizontal="@dimen/screen_horizontal_margin"
+        android:layout_marginBottom="8dp"
         android:background="@drawable/bg_button_corners_12dp"
         android:text="@string/btn_add_subject"
-        android:textSize="15sp"/>
+        android:textSize="15sp" />
 
 </LinearLayout>
