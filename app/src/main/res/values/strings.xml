@@ -30,7 +30,18 @@
     <string name="tv_current_account_title">Текущий аккаунт</string>
     <string name="btn_sign_out">Выйти из аккаунта</string>
     <string name="tv_active_subjects">Ваши объявления:</string>
-    <string name="tv_exchange_suggestions">Предложения обмена:</string>
+    <string name="tv_exchange_suggestions">Согласованные обмены:</string>
     <string name="tv_exhange_offer">Предложение обмена</string>
     <string name="tv_make_exchange">Совершить обмен</string>
+    <string name="tv_exchange_user">Пользователь</string>
+    <string name="not_selected">Ничего не выбрано</string>
+    <string name="tv_subject_offer">Предмет на обмен</string>
+    <string name="tv_select_subject">Выберите ваш предмет</string>
+    <string name="tv_offer_creation_success">Предложение обмена успешно отправлено!</string>
+    <string name="tv_offer_creation_success_desc">Перейдите в профиль чтобы увидеть, согласился ли человек на обмен</string>
+    <string name="btn_go_to_profile">Перейти в профиль</string>
+    <string name="btn_create_route">Построить маршрут</string>
+    <string name="tv_add_subject_success">Вы успешно выставили предмет на обмен!</string>
+    <string name="tv_add_subject_success_desc">Перейдите к карте обменов чтобы найти что-то нужное для себя</string>
+    <string name="btn_go_to_map">Перейти к карте</string>
 </resources>

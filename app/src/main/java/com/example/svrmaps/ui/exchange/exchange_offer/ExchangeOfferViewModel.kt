@@ -1,9 +1,10 @@
-package com.example.svrmaps.ui.add_subject
+package com.example.svrmaps.ui.exchange.exchange_offer
 
 import com.example.predicate.model.schedulers.SchedulersProvider
-import com.example.svrmaps.interactor.SubjectInteractor
+import com.example.svrmaps.interactor.ExchangeInteractor
+import com.example.svrmaps.model.exchange.Exchange
+import com.example.svrmaps.model.subject.Subject
 import com.example.svrmaps.system.ErrorHandler
-import com.example.svrmaps.system.SessionKeeper
 import com.example.svrmaps.system.SingleEvent
 import com.example.svrmaps.system.acceptSingleEvent
 import com.example.svrmaps.ui.base.BaseViewModel
@@ -14,15 +15,13 @@ import io.reactivex.disposables.Disposable
 import javax.inject.Inject
 
 @HiltViewModel
-class AddSubjectViewModel @Inject constructor(
+class ExchangeOfferViewModel @Inject constructor(
     private val errorHandler: ErrorHandler,
     private val schedulers: SchedulersProvider,
-    private val interactor: SubjectInteractor,
-    private val sessionKeeper: SessionKeeper
+    private val intetactor: ExchangeInteractor
 ) : BaseViewModel() {
 
-    var currentName = ""
-    var currentDescription = ""
+    var currentOfferSubject: Subject? = null
 
     private var disposable: Disposable? = null
 
@@ -34,13 +33,20 @@ class AddSubjectViewModel @Inject constructor(
     val loading: Observable<Boolean> = loadingRelay.hide()
     val successCreating: Observable<String> = successCreatingRelay.hide()
 
-    fun createSubject(latitude: Double?, longitude: Double?) {
-        disposable = interactor.createSubject(
-            currentName,
-            currentDescription,
-            latitude,
-            longitude,
-            sessionKeeper.userAccount?.email
+    fun createExchangeOffer(subject: Subject?) {
+        disposable = intetactor.createExchangeOffer(
+            Exchange(
+              offerSubjectName = currentOfferSubject?.name ?: "",
+              offerSubjectDescription = currentOfferSubject?.description ?: "",
+              offerLatitude = currentOfferSubject?.latitude,
+              offerLongitude = currentOfferSubject?.longitude,
+              offerUserEmail = currentOfferSubject?.creatorEmail,
+              destSubjectName = subject?.name ?: "",
+              destSubjectDescription = subject?.description ?: "",
+              destLatitude = subject?.latitude,
+              destLongitude = subject?.longitude,
+              destUserEmail = subject?.creatorEmail
+            )
         )
             .subscribeOn(schedulers.io())
             .observeOn(schedulers.ui())
@@ -55,9 +61,5 @@ class AddSubjectViewModel @Inject constructor(
                     }
                 }
             )
-
     }
-
-    fun validateData(): Boolean =
-        currentName != "" && currentDescription != ""
 }

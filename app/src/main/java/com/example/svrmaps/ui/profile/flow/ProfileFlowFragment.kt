@@ -7,12 +7,17 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.svrmaps.databinding.FrProfileFlowBinding
 import com.example.svrmaps.databinding.LayoutContainerBinding
+import com.example.svrmaps.model.exchange.Exchange
 import com.example.svrmaps.ui.base.BaseFragment
 import com.example.svrmaps.ui.exchange.ExchangeMapFragment
 import com.example.svrmaps.ui.profile.ProfileFragment
 import com.example.svrmaps.utils.newRootScreen
 
 class ProfileFlowFragment : BaseFragment() {
+
+    interface OnCreateRouteListener {
+        fun createRoute(exchange: Exchange)
+    }
 
     private lateinit var _binding: LayoutContainerBinding
     private val binding get() = _binding

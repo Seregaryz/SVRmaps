@@ -29,7 +29,7 @@ class SubjectRepositoryImpl @Inject constructor(
     }
 
     override fun createSubject(
-        name: String, description: String, latitude: Double?, longitude: Double?
+        name: String, description: String, latitude: Double?, longitude: Double?, email: String?
     ): Single<String> {
         val key = listRef.push().key ?: "null"
         myRef.child(key).setValue(
@@ -37,7 +37,8 @@ class SubjectRepositoryImpl @Inject constructor(
                 name = name,
                 description = description,
                 latitude = latitude,
-                longitude = longitude
+                longitude = longitude,
+                creatorEmail = email
             )
         )
         return Single.just(key)

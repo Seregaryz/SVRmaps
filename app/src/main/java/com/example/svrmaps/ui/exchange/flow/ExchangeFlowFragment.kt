@@ -10,11 +10,17 @@ import com.example.svrmaps.databinding.LayoutContainerBinding
 import com.example.svrmaps.ui.add_subject.AddSubjectFragment
 import com.example.svrmaps.ui.base.BaseFragment
 import com.example.svrmaps.ui.exchange.ExchangeMapFragment
+import com.example.svrmaps.ui.exchange.ExchangeOfferSuccessFragment
 import com.example.svrmaps.utils.newRootScreen
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class ExchangeFlowFragment : BaseFragment() {
+class ExchangeFlowFragment : BaseFragment(),
+    ExchangeOfferSuccessFragment.OnNavigationListener {
+
+    interface OnNavigationListener {
+        fun navigateToProfile()
+    }
 
     private lateinit var _binding: LayoutContainerBinding
     private val binding get() = _binding
@@ -34,6 +40,10 @@ class ExchangeFlowFragment : BaseFragment() {
                 ExchangeMapFragment::class.java
             )
         }
+    }
+
+    override fun navigateToProfile() {
+        (parentFragment as? OnNavigationListener)?.navigateToProfile()
     }
 
 }

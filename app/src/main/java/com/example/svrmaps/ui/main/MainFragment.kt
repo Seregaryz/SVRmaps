@@ -8,16 +8,20 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import com.example.svrmaps.R
 import com.example.svrmaps.databinding.FrMainBinding
+import com.example.svrmaps.model.exchange.Exchange
 import com.example.svrmaps.ui.add_subject.flow.AddSubjectFlowFragment
 import com.example.svrmaps.ui.base.BaseFragment
 import com.example.svrmaps.ui.exchange.flow.ExchangeFlowFragment
 import com.example.svrmaps.ui.profile.flow.ProfileFlowFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.fr_main.*
 import timber.log.Timber
 
 @AndroidEntryPoint
-class MainFragment : Fragment() {
+class MainFragment : Fragment(),
+    ExchangeFlowFragment.OnNavigationListener,
+    AddSubjectFlowFragment.OnNavigationListener {
 
     private var _binding: FrMainBinding? = null
     private val binding get() = _binding!!
@@ -113,6 +117,22 @@ class MainFragment : Fragment() {
         private const val exchangesTabKey = "exchangesFlowFragment"
         private const val addSubjectTabKey = "AddSubjectFlowFragment"
         private const val profileTabKey = "ProfileFragment"
+    }
+
+    override fun navigateToProfile() {
+        binding.bottomBar.apply {
+            selectedItemId = R.id.profile
+            viewModel.currentSelectedItemId = R.id.profile
+        }
+        showFragment(profileTabKey)
+    }
+
+    override fun navigateToMap() {
+        binding.bottomBar.apply {
+            selectedItemId = R.id.exchanges
+            viewModel.currentSelectedItemId = R.id.exchanges
+        }
+        showFragment(exchangesTabKey)
     }
 
 }

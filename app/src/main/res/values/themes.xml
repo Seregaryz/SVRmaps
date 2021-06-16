@@ -102,7 +102,7 @@
 
     <!--    new-->
     <style name="H1">
-        <item name="android:textColor">?attr/colorPrimaryApp</item>
+        <item name="android:textColor">@color/primary_text</item>
         <item name="android:textSize">28sp</item>
         <item name="android:fontFamily">@font/roboto_bold</item>
         <item name="android:textStyle">bold</item>
@@ -110,7 +110,7 @@
     </style>
 
     <style name="H2">
-        <item name="android:textColor">?attr/colorPrimaryApp</item>
+        <item name="android:textColor">@color/primary_text</item>
         <item name="android:textSize">22sp</item>
         <item name="android:fontFamily">@font/roboto_bold</item>
         <item name="android:textStyle">normal</item>
@@ -118,7 +118,7 @@
     </style>
 
     <style name="H3">
-        <item name="android:textColor">?attr/colorPrimaryApp</item>
+        <item name="android:textColor">@color/primary_text</item>
         <item name="android:textSize">20sp</item>
         <item name="android:fontFamily">@font/roboto_bold</item>
         <item name="android:textStyle">normal</item>
@@ -126,7 +126,7 @@
     </style>
 
     <style name="Subtitle1">
-        <item name="android:textColor">?attr/colorPrimaryApp</item>
+        <item name="android:textColor">@color/primary_text</item>
         <item name="android:textSize">16sp</item>
         <item name="android:fontFamily">@font/roboto_medium</item>
         <item name="android:textStyle">normal</item>
@@ -134,7 +134,7 @@
     </style>
 
     <style name="Body1">
-        <item name="android:textColor">?attr/colorPrimaryApp</item>
+        <item name="android:textColor">@color/primary_text</item>
         <item name="android:textSize">16sp</item>
         <item name="android:fontFamily">@font/roboto_regular</item>
         <item name="android:textStyle">normal</item>
@@ -142,7 +142,7 @@
     </style>
 
     <style name="Subtitle2">
-        <item name="android:textColor">?attr/colorPrimaryApp</item>
+        <item name="android:textColor">@color/primary_text</item>
         <item name="android:textSize">14sp</item>
         <item name="android:fontFamily">@font/roboto_medium</item>
         <item name="android:textStyle">normal</item>
@@ -150,21 +150,21 @@
     </style>
 
     <style name="Subtitle3">
-        <item name="android:textColor">?attr/colorPrimaryApp</item>
+        <item name="android:textColor">@color/primary_text</item>
         <item name="android:textSize">16sp</item>
         <item name="android:fontFamily">@font/roboto_medium</item>
         <item name="android:lineSpacingExtra">0.1sp</item>
     </style>
 
     <style name="Subtitle4">
-        <item name="android:textColor">?attr/colorPrimaryApp</item>
+        <item name="android:textColor">@color/primary_text</item>
         <item name="android:textSize">16sp</item>
         <item name="android:fontFamily">@font/roboto_regular</item>
         <item name="android:lineSpacingExtra">0.1sp</item>
     </style>
 
     <style name="Body2">
-        <item name="android:textColor">?attr/colorPrimaryApp</item>
+        <item name="android:textColor">@color/primary_text</item>
         <item name="android:textSize">14sp</item>
         <item name="android:fontFamily">@font/roboto_regular</item>
         <item name="android:textStyle">normal</item>
@@ -172,7 +172,7 @@
     </style>
 
     <style name="Caption1">
-        <item name="android:textColor">?attr/colorPrimaryApp</item>
+        <item name="android:textColor">@color/primary_text</item>
         <item name="android:textSize">12sp</item>
         <item name="android:fontFamily">@font/roboto_regular</item>
         <item name="android:textStyle">normal</item>

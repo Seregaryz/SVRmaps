@@ -6,10 +6,16 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.svrmaps.databinding.LayoutContainerBinding
 import com.example.svrmaps.ui.add_subject.AddSubjectFragment
+import com.example.svrmaps.ui.add_subject.SuccessCreatingFragment
 import com.example.svrmaps.ui.base.BaseFragment
 import com.example.svrmaps.utils.newRootScreen
 
-class AddSubjectFlowFragment : BaseFragment() {
+class AddSubjectFlowFragment : BaseFragment(),
+    SuccessCreatingFragment.OnNavigationListener {
+
+    interface OnNavigationListener {
+        fun navigateToMap()
+    }
 
     private lateinit var _binding: LayoutContainerBinding
     private val binding get() = _binding
@@ -29,6 +35,10 @@ class AddSubjectFlowFragment : BaseFragment() {
                 AddSubjectFragment::class.java
             )
         }
+    }
+
+    override fun navigateToMap() {
+        (parentFragment as? OnNavigationListener)?.navigateToMap()
     }
 
 }

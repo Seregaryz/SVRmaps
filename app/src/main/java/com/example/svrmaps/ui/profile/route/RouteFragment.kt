@@ -1,4 +1,4 @@
-package com.example.svrmaps.ui.exchange
+package com.example.svrmaps.ui.profile.route
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -7,21 +7,29 @@ import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.location.Location
 import android.os.Bundle
+import android.util.Log
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.fragment.app.viewModels
+import com.example.svrmaps.BuildConfig
 import com.example.svrmaps.R
 import com.example.svrmaps.databinding.FrExchhangeMapBinding
+import com.example.svrmaps.databinding.FrRouteBinding
+import com.example.svrmaps.model.exchange.Exchange
 import com.example.svrmaps.ui.base.BaseFragment
-import com.example.svrmaps.ui.exchange.exchange_offer.ExchangeOfferBottomSheetFragment
-import com.example.svrmaps.utils.navigateTo
-import com.example.svrmaps.utils.setSlideAnimation
+import com.example.svrmaps.ui.exchange.ExchangeMapFragment
+import com.example.svrmaps.utils.registerOnBackPressedCallback
 import com.github.florent37.runtimepermission.rx.RxPermissions
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import com.mapbox.api.directions.v5.DirectionsCriteria
+import com.mapbox.api.directions.v5.MapboxDirections
+import com.mapbox.api.directions.v5.models.DirectionsResponse
 import com.mapbox.api.directions.v5.models.DirectionsRoute
+import com.mapbox.api.optimization.v1.MapboxOptimization
+import com.mapbox.api.optimization.v1.models.OptimizationResponse
 import com.mapbox.geojson.Feature
 import com.mapbox.geojson.FeatureCollection
 import com.mapbox.geojson.Point
@@ -35,22 +43,24 @@ import com.mapbox.mapboxsdk.location.modes.CameraMode
 import com.mapbox.mapboxsdk.location.modes.RenderMode
 import com.mapbox.mapboxsdk.maps.MapboxMap
 import com.mapbox.mapboxsdk.maps.Style
-import com.mapbox.mapboxsdk.style.layers.PropertyFactory.*
+import com.mapbox.mapboxsdk.style.layers.PropertyFactory
 import com.mapbox.mapboxsdk.style.layers.SymbolLayer
 import com.mapbox.mapboxsdk.style.sources.GeoJsonSource
 import com.mapbox.services.android.navigation.ui.v5.route.NavigationMapRoute
-import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.disposables.Disposable
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import timber.log.Timber
 
+class RouteFragment : BaseFragment() {
 
-@AndroidEntryPoint
-class ExchangeMapFragment : BaseFragment(),
-    ExchangeOfferBottomSheetFragment.OnNavigationListener {
-
-    private lateinit var _binding: FrExchhangeMapBinding
+    private lateinit var _binding: FrRouteBinding
     private val binding get() = _binding
 
-    private val viewModel: ExchangeViewModel by viewModels()
+    private val exchange: Exchange? by lazy {
+        requireArguments().getParcelable<Exchange>(ARG_EXCHANGE)
+    }
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private var navigationMapRoute: NavigationMapRoute? = null
@@ -64,12 +74,15 @@ class ExchangeMapFragment : BaseFragment(),
         savedInstanceState: Bundle?
     ): View {
         Mapbox.getInstance(requireContext(), getString(R.string.mapbox_access_token))
-        _binding = FrExchhangeMapBinding.inflate(inflater)
+        _binding = FrRouteBinding.inflate(inflater)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        registerOnBackPressedCallback {
+            parentFragmentManager.popBackStack()
+        }
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
         binding.mapView.onCreate(savedInstanceState)
         requestLocationPermissions()
@@ -118,20 +131,17 @@ class ExchangeMapFragment : BaseFragment(),
             mapboxMap.setStyle(Style.MAPBOX_STREETS) {
                 initLocationComponent(mapboxMap, it)
                 this.mapboxMap = mapboxMap
-                viewModel.getSubjects()
                 initRoute()
+                createRoute(listOf(
+                    Point.fromLngLat(exchange?.offerLongitude?: 0.0, exchange?.offerLatitude ?: 0.0),
+                    Point.fromLngLat(exchange?.destLongitude?: 0.0, exchange?.destLatitude ?: 0.0)
+                ))
             }
         }
     }
 
     @SuppressLint("MissingPermission")
     private fun initLocationComponent(mapboxMap: MapboxMap, style: Style) {
-        val customLocationComponentOptions = LocationComponentOptions.builder(requireContext())
-            .elevation(5f)
-            .accuracyAlpha(.6f)
-            .accuracyColor(Color.TRANSPARENT)
-            .foregroundDrawable(R.drawable.ic_launcher_foreground)
-            .build()
 
         mapboxMap.apply {
             fusedLocationClient.lastLocation
@@ -140,28 +150,110 @@ class ExchangeMapFragment : BaseFragment(),
                     val long = location?.longitude ?: 0.0
                     val bearing = location?.bearing ?: 0.0f
                     setLatLngBoundsForCameraTarget(
-                        LatLngBounds.from(lat + 0.03, long + 0.15, lat - 0.03, long - 0.15))
-                    setMinZoomPreference(MIN_ZOOM)
-                    setMaxZoomPreference(MAX_ZOOM)
+                        LatLngBounds.from(lat + 0.03, long + 0.15, lat - 0.03, long - 0.15)
+                    )
+                    setMinZoomPreference(ExchangeMapFragment.MIN_ZOOM)
+                    setMaxZoomPreference(ExchangeMapFragment.MAX_ZOOM)
                     cameraPosition = CameraPosition.Builder()
                         .bearing(bearing.toDouble())
                         .target(LatLng(lat, long))
-                        .zoom(INITIAL_ZOOM)
+                        .zoom(ExchangeMapFragment.INITIAL_ZOOM)
                         .build()
                 }
-
-            val locationComponentActivationOptions =
-                LocationComponentActivationOptions.builder(requireContext(), style)
-                    .locationComponentOptions(customLocationComponentOptions)
-                    .build()
-
-            locationComponent.apply {
-                activateLocationComponent(locationComponentActivationOptions)
-                isLocationComponentEnabled = true
-                cameraMode = CameraMode.TRACKING
-                renderMode = RenderMode.COMPASS
+            
+            val symbolLayerIconFeatureList: MutableList<Feature> = ArrayList()
+            symbolLayerIconFeatureList.add(
+                Feature.fromGeometry(
+                    Point.fromLngLat(exchange?.offerLongitude ?: 0.0, exchange?.offerLatitude ?: 0.0)
+                )
+            )
+            symbolLayerIconFeatureList.add(
+                Feature.fromGeometry(
+                    Point.fromLngLat(exchange?.destLongitude ?: 0.0, exchange?.destLatitude ?: 0.0)
+                )
+            )
+            mapboxMap.setStyle(
+                Style.Builder()
+                    .fromUri("mapbox://styles/mapbox/cjf4m44iw0uza2spb3q0a7s41")
+                    .withImage(
+                        ExchangeMapFragment.ICON_ID, BitmapFactory.decodeResource(
+                            resources,
+                            R.drawable.mapbox_marker_icon_default
+                        )
+                    ) // Adding a GeoJson source for the SymbolLayer icons.
+                    .withSource(
+                        GeoJsonSource(
+                            ExchangeMapFragment.SOURCE_ID,
+                            FeatureCollection.fromFeatures(symbolLayerIconFeatureList)
+                        )
+                    ) // Adding the actual SymbolLayer to the map style. An offset is added that the bottom of the red
+                    // marker icon gets fixed to the coordinate, rather than the middle of the icon being fixed to
+                    // the coordinate point. This is offset is not always needed and is dependent on the image
+                    // that you use for the SymbolLayer icon.
+                    .withLayer(
+                        SymbolLayer(ExchangeMapFragment.LAYER_ID, ExchangeMapFragment.SOURCE_ID)
+                            .withProperties(
+                                PropertyFactory.iconImage(ExchangeMapFragment.ICON_ID),
+                                PropertyFactory.iconAllowOverlap(true),
+                                PropertyFactory.iconIgnorePlacement(true)
+                            )
+                    )
+            ) {
+                // Map is set up and the style has loaded. Now you can add additional data or make other map adjustments.
             }
         }
+    }
+
+    private var currentRoute: DirectionsRoute? = null
+    private val ROUTE_SOURCE_ID = "route-source-id"
+    private val RED_PIN_ICON_ID = "red-pin-icon-id"
+
+    private fun createRoute(points: List<Point>) {
+        buildClient(points).enqueueCall(object : Callback<DirectionsResponse> {
+
+            override fun onResponse(
+                call: Call<DirectionsResponse>,
+                response: Response<DirectionsResponse>
+            ) {
+                if (response.body() == null) {
+                    return
+                } else if (response.body()!!.routes().size < 1) {
+                    return
+                }
+
+                currentRoute = response.body()!!.routes()[0]
+                if (mapboxMap != null) {
+                    if (navigationMapRoute != null) {
+                        navigationMapRoute?.removeRoute()
+                    } else {
+                        navigationMapRoute = NavigationMapRoute(
+                            null,
+                            binding.mapView,
+                            mapboxMap!!,
+                            R.style.NavigationMapRoute
+                        )
+                    }
+                    navigationMapRoute?.addRoute(currentRoute)
+                }
+            }
+
+            override fun onFailure(call: Call<DirectionsResponse>, t: Throwable) {
+                Timber.d(t.message.orEmpty())
+            }
+
+        })
+    }
+
+    private fun buildClient(points: List<Point>): MapboxDirections {
+        val pointsSize = points.size
+        val client = MapboxDirections.builder()
+            .origin(points[0])
+            .destination(points[pointsSize - 1])
+            .steps(true)
+            .overview(DirectionsCriteria.OVERVIEW_FULL)
+            .profile(DirectionsCriteria.PROFILE_WALKING)
+            .accessToken(getString(R.string.mapbox_access_token))
+        return client.build()
     }
 
     private fun initRoute() {
@@ -185,58 +277,6 @@ class ExchangeMapFragment : BaseFragment(),
 
     override fun onResume() {
         super.onResume()
-        viewModel.apply {
-            subjectsData.subscribe {
-                //Toast.makeText(requireContext(), "Size: ${it.size}", Toast.LENGTH_SHORT).show()
-                val symbolLayerIconFeatureList: MutableList<Feature> = ArrayList()
-                it.forEach { subject ->
-                    symbolLayerIconFeatureList.add(
-                        Feature.fromGeometry(
-                            Point.fromLngLat(subject.longitude ?: 0.0, subject.latitude ?: 0.0)
-                        )
-                    )
-                }
-                mapboxMap?.setStyle(
-                    Style.Builder()
-                        .fromUri("mapbox://styles/mapbox/cjf4m44iw0uza2spb3q0a7s41")
-                        .withImage(
-                            ICON_ID, BitmapFactory.decodeResource(
-                                resources,
-                                R.drawable.mapbox_marker_icon_default
-                            )
-                        ) // Adding a GeoJson source for the SymbolLayer icons.
-                        .withSource(
-                            GeoJsonSource(
-                                SOURCE_ID,
-                                FeatureCollection.fromFeatures(symbolLayerIconFeatureList)
-                            )
-                        ) // Adding the actual SymbolLayer to the map style. An offset is added that the bottom of the red
-                        // marker icon gets fixed to the coordinate, rather than the middle of the icon being fixed to
-                        // the coordinate point. This is offset is not always needed and is dependent on the image
-                        // that you use for the SymbolLayer icon.
-                        .withLayer(
-                            SymbolLayer(LAYER_ID, SOURCE_ID)
-                                .withProperties(
-                                    iconImage(ICON_ID),
-                                    iconAllowOverlap(true),
-                                    iconIgnorePlacement(true)
-                                )
-                        )
-                ) {
-                    // Map is set up and the style has loaded. Now you can add additional data or make other map adjustments.
-                }
-                mapboxMap?.addOnMapClickListener { point ->
-                    val offer = it.find { subject ->
-                        subject.longitude!! < point.longitude + 0.0003 && subject.longitude > point.longitude - 0.0003 &&
-                                subject.latitude!! < point.latitude + 0.0003 && subject.latitude > point.latitude - 0.0003
-                    }
-                    if (offer != null) {
-                        ExchangeOfferBottomSheetFragment.create(offer).show(childFragmentManager, null)
-                    }
-                    true
-                }
-            }
-        }
         binding.mapView.onResume()
     }
 
@@ -261,20 +301,8 @@ class ExchangeMapFragment : BaseFragment(),
         binding.mapView.onDestroy()
     }
 
-    override fun makeExchange() {
-        parentFragmentManager.navigateTo(
-            ExchangeOfferSuccessFragment::class.java,
-            setupFragmentTransaction = { it.setSlideAnimation() }
-        )
-    }
-
     companion object {
-        const val MIN_ZOOM = 4.0
-        const val MAX_ZOOM = 18.0
-        const val INITIAL_ZOOM = 12.0
-        const val SOURCE_ID = "SOURCE_ID"
-        const val ICON_ID = "ICON_ID"
-        const val LAYER_ID = "LAYER_ID"
+        const val ARG_EXCHANGE = "exchange"
     }
 
 }

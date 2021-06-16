@@ -13,7 +13,7 @@ interface SubjectRepository {
     fun getSubjectsFromFb(): Observable<List<Subject>>
 
     fun createSubject(
-        name: String, description: String, latitude: Double?, longitude: Double?
+        name: String, description: String, latitude: Double?, longitude: Double?, email: String?
     ): Single<String>
 
 }

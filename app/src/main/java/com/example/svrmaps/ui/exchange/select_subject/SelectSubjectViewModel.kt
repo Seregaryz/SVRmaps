@@ -1,11 +1,11 @@
-package com.example.svrmaps.ui.exchange
+package com.example.svrmaps.ui.exchange.select_subject
 
 import com.example.predicate.model.schedulers.SchedulersProvider
 import com.example.svrmaps.interactor.SubjectInteractor
 import com.example.svrmaps.model.subject.Subject
 import com.example.svrmaps.system.ErrorHandler
+import com.example.svrmaps.system.SessionKeeper
 import com.example.svrmaps.system.SingleEvent
-import com.example.svrmaps.system.acceptSingleEvent
 import com.example.svrmaps.ui.base.BaseViewModel
 import com.jakewharton.rxrelay2.BehaviorRelay
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,10 +14,11 @@ import io.reactivex.disposables.Disposable
 import javax.inject.Inject
 
 @HiltViewModel
-class ExchangeViewModel @Inject constructor(
+class SelectSubjectViewModel @Inject constructor(
     private val errorHandler: ErrorHandler,
     private val schedulers: SchedulersProvider,
-    private val interactor: SubjectInteractor
+    private val interactor: SubjectInteractor,
+    private val sessionKeeper: SessionKeeper
 ): BaseViewModel() {
 
     private var disposable: Disposable? = null
@@ -30,33 +31,19 @@ class ExchangeViewModel @Inject constructor(
     val loading: Observable<Boolean> = loadingRelay.hide()
     val subjectsData: Observable<List<Subject>> = subjectsDataRelay.hide()
 
-//    init {
-//        getSubjects()
-//    }
+    init {
+        getMySubjects()
+    }
 
-    fun getSubjects() {
+    fun getMySubjects() {
         subjectsDataRelay.accept(
             listOf(
                 Subject(
-                    "Книга Д.Оруэл 1984",
-                    "Обмениваю хорошую книгу после прочтения, впечатления от нее только положительные",
+                    "Чехол на телефон xiaomi mi5",
+                    "Черный чехол на телефон, мне не подошел",
                     55.7923736,
                     49.1210780,
-                    "petrov@gmail.com"
-                ),
-                Subject(
-                    "Кепка фк \"Спартак\"",
-                    "Перестал болеть за народную команду, готов обменять на любой интересный предмет",
-                    55.7901736,
-                    49.1175360,
-                    "djeykopUser@gmail.com"
-                ),
-                Subject(
-                    "Кепка фк \"Спартак\"",
-                    "Перестал болеть за народную команду, готов обменять на любой интересный предмет",
-                    55.7893730,
-                    49.120860,
-                    "ivan_vasiliev@gmail.com"
+                    sessionKeeper.userAccount?.email
                 )
             )
         )

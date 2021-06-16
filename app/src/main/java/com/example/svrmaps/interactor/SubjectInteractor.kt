@@ -14,9 +14,10 @@ class SubjectInteractor @Inject constructor(
         name: String,
         description: String,
         latitude: Double?,
-        longitude: Double?
+        longitude: Double?,
+        email: String?
     ): Single<String> =
-        repository.createSubject(name, description, latitude, longitude)
+        repository.createSubject(name, description, latitude, longitude, email)
 
     fun getSubjects(): Observable<List<Subject>> = repository.getSubjectsFromFb()
 

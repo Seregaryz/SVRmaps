@@ -1,9 +1,6 @@
 package com.example.svrmaps.di
 
-import com.example.svrmaps.network.repository.SubjectRepository
-import com.example.svrmaps.network.repository.SubjectRepositoryImpl
-import com.example.svrmaps.network.repository.UserRepository
-import com.example.svrmaps.network.repository.UserRepositoryImpl
+import com.example.svrmaps.network.repository.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -23,5 +20,10 @@ class RepositoryModule {
     @Singleton
     fun provideUserRepository(userRepository: UserRepositoryImpl): UserRepository =
         userRepository
+
+    @Provides
+    @Singleton
+    fun provideExchangeRepository(exchangeRepository: ExchangeRepositoryImpl): ExchangeRepository =
+        exchangeRepository
 
 }
